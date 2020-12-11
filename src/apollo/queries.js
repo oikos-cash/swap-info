@@ -3,7 +3,7 @@ import { FACTORY_ADDRESS, BUNDLE_ID } from '../constants'
 
 export const SUBGRAPH_HEALTH = gql`
   query health {
-    indexingStatusForCurrentVersion(subgraphName: "uniswap/uniswap-v2") {
+    indexingStatusForPendingVersion(subgraphName: "oikos/swapv2") {
       synced
       health
       chains {
@@ -49,7 +49,7 @@ export const V1_DATA_QUERY = gql`
 export const GET_BLOCK = gql`
   query blocks($timestampFrom: Int!, $timestampTo: Int!) {
     blocks(
-      first: 1
+      first: 100
       orderBy: timestamp
       orderDirection: asc
       where: { timestamp_gt: $timestampFrom, timestamp_lt: $timestampTo }

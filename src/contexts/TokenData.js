@@ -193,12 +193,18 @@ export default function Provider({ children }) {
 }
 
 const getTopTokens = async (ethPrice, ethPriceOld) => {
-  const utcCurrentTime = dayjs()
+
+  console.log({ethPrice, ethPriceOld})
+
+  let utcCurrentTime = dayjs()
+  utcCurrentTime = utcCurrentTime.subtract('2', 'month')
   const utcOneDayBack = utcCurrentTime.subtract(1, 'day').unix()
   const utcTwoDaysBack = utcCurrentTime.subtract(2, 'day').unix()
+
   let oneDayBlock = await getBlockFromTimestamp(utcOneDayBack)
   let twoDayBlock = await getBlockFromTimestamp(utcTwoDaysBack)
 
+  console.log({oneDayBlock, twoDayBlock})
   try {
     let current = await client.query({
       query: TOKENS_CURRENT,
@@ -294,7 +300,7 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
           })
 
           // HOTFIX for Aave
-          if (data.id === '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
+          /*if (data.id === '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
             const aaveData = await client.query({
               query: PAIR_DATA('0xdfc14d2af169b0d36c4eff567ada9b2e0cae044f'),
               fetchPolicy: 'cache-first',
@@ -303,7 +309,7 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
             data.totalLiquidityUSD = parseFloat(result.reserveUSD) / 2
             data.liquidityChangeUSD = 0
             data.priceChangeUSD = 0
-          }
+          }*/
 
           return data
         })
@@ -422,7 +428,7 @@ const getTokenData = async (address, ethPrice, ethPriceOld) => {
     })
 
     // HOTFIX for Aave
-    if (data.id === '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
+    /*if (data.id === '0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9') {
       const aaveData = await client.query({
         query: PAIR_DATA('0xdfc14d2af169b0d36c4eff567ada9b2e0cae044f'),
         fetchPolicy: 'cache-first',
@@ -431,7 +437,7 @@ const getTokenData = async (address, ethPrice, ethPriceOld) => {
       data.totalLiquidityUSD = parseFloat(result.reserveUSD) / 2
       data.liquidityChangeUSD = 0
       data.priceChangeUSD = 0
-    }
+    }*/
   } catch (e) {
     console.log(e)
   }

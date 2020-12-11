@@ -6,7 +6,7 @@ import { Route, Switch, BrowserRouter, Redirect } from 'react-router-dom'
 import GlobalPage from './pages/GlobalPage'
 import TokenPage from './pages/TokenPage'
 import PairPage from './pages/PairPage'
-import { useGlobalData, useGlobalChartData } from './contexts/GlobalData'
+import { useGlobalData, useGlobalChartData, useEthPrice } from './contexts/GlobalData'
 import { isAddress } from './utils'
 import AccountPage from './pages/AccountPage'
 import AllTokensPage from './pages/AllTokensPage'
@@ -18,7 +18,7 @@ import AccountLookup from './pages/AccountLookup'
 import { OVERVIEW_TOKEN_BLACKLIST, PAIR_BLACKLIST } from './constants'
 import LocalLoader from './components/LocalLoader'
 import { useLatestBlocks } from './contexts/Application'
-
+ 
 const AppWrapper = styled.div`
   position: relative;
   width: 100%;
@@ -100,10 +100,13 @@ function App() {
   const globalData = useGlobalData()
   const globalChartData = useGlobalChartData()
   const [latestBlock, headBlock] = useLatestBlocks()
-
+  //const latestBlock = 25765267;
+  //const headBlock = 25765257;
   // show warning
   const showWarning = headBlock && latestBlock ? headBlock - latestBlock > BLOCK_DIFFERENCE_THRESHOLD : false
-
+  const [ethPrice] = useEthPrice()
+  console.log(ethPrice)
+  console.log(globalChartData)
   return (
     <ApolloProvider client={client}>
       <AppWrapper>

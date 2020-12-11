@@ -169,10 +169,10 @@ export default function Provider({ children }) {
 export function useLatestBlocks() {
   const [state, { updateLatestBlock, updateHeadBlock }] = useApplicationContext()
 
-  const latestBlock = state?.[LATEST_BLOCK]
-  const headBlock = state?.[HEAD_BLOCK]
+  const latestBlock = 23113439 //state?.[LATEST_BLOCK]
+  const headBlock = 23113439 //state?.[HEAD_BLOCK]
 
-  useEffect(() => {
+  /*useEffect(() => {
     async function fetch() {
       healthClient
         .query({
@@ -194,7 +194,7 @@ export function useLatestBlocks() {
       fetch()
     }
   }, [latestBlock, updateHeadBlock, updateLatestBlock])
-
+*/
   return [latestBlock, headBlock]
 }
 

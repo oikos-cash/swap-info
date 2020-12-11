@@ -239,6 +239,7 @@ async function getGlobalData(ethPrice, oldEthPrice) {
     })
     data = result.data.uniswapFactories[0]
 
+    console.log("uniswap factory: ", data)
     // fetch the historical data
     let oneDayResult = await client.query({
       query: GLOBAL_DATA(oneDayBlock?.number),
@@ -541,8 +542,12 @@ export function useGlobalData() {
 
       let allPairs = await getAllPairsOnUniswap()
       updateAllPairsInUniswap(allPairs)
+      //console.log(allPairs)
 
       let allTokens = await getAllTokensOnUniswap()
+      //console.log(allTokens)
+
+      
       updateAllTokensInUniswap(allTokens)
     }
     if (!data && ethPrice && oldEthPrice) {
@@ -550,6 +555,7 @@ export function useGlobalData() {
     }
   }, [ethPrice, oldEthPrice, update, data, updateAllPairsInUniswap, updateAllTokensInUniswap])
 
+  console.log(data)
   return data || {}
 }
 
@@ -608,10 +614,10 @@ export function useGlobalTransactions() {
 }
 
 export function useEthPrice() {
-  const [state, { updateEthPrice }] = useGlobalDataContext()
-  const ethPrice = state?.[ETH_PRICE_KEY]
-  const ethPriceOld = state?.['oneDayPrice']
-  useEffect(() => {
+ // const [state, { updateEthPrice }] = useGlobalDataContext()
+  const ethPrice = 0.026 //state?.[ETH_PRICE_KEY]
+  const ethPriceOld = 0.026 //state?.['oneDayPrice']
+  /*useEffect(() => {
     async function checkForEthPrice() {
       if (!ethPrice) {
         let [newPrice, oneDayPrice, priceChange] = await getEthPrice()
@@ -619,7 +625,7 @@ export function useEthPrice() {
       }
     }
     checkForEthPrice()
-  }, [ethPrice, updateEthPrice])
+  }, [ethPrice, updateEthPrice])*/
 
   return [ethPrice, ethPriceOld]
 }
@@ -627,7 +633,7 @@ export function useEthPrice() {
 export function useAllPairsInUniswap() {
   const [state] = useGlobalDataContext()
   let allPairs = state?.allPairs
-
+  console.log("allPairs", allPairs)
   return allPairs || []
 }
 

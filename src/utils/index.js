@@ -99,6 +99,7 @@ export const toWeeklyDate = (date) => {
 
 export function getTimestampsForChanges() {
   const utcCurrentTime = dayjs()
+  console.log(utcCurrentTime)
   const t1 = utcCurrentTime.subtract(1, 'day').startOf('minute').unix()
   const t2 = utcCurrentTime.subtract(2, 'day').startOf('minute').unix()
   const tWeek = utcCurrentTime.subtract(1, 'week').startOf('minute').unix()
@@ -140,14 +141,18 @@ export async function splitQuery(query, localClient, vars, list, skipCount = 100
  * @param {Int} timestamp in seconds
  */
 export async function getBlockFromTimestamp(timestamp) {
+
+ // timestamp = timestamp - 8278133
   let result = await blockClient.query({
     query: GET_BLOCK,
     variables: {
       timestampFrom: timestamp,
-      timestampTo: timestamp + 600,
+      timestampTo: timestamp + 6000000,
     },
     fetchPolicy: 'cache-first',
   })
+
+  console.log(result)
   return result?.data?.blocks?.[0]?.number
 }
 
@@ -164,7 +169,7 @@ export async function getBlocksFromTimestamps(timestamps, skipCount = 500) {
   }
 
   let fetchedData = await splitQuery(GET_BLOCKS, blockClient, [], timestamps, skipCount)
-
+  console.log({fetchedData})
   let blocks = []
   if (fetchedData) {
     for (var t in fetchedData) {
@@ -294,7 +299,8 @@ export const setThemeColor = (theme) => document.documentElement.style.setProper
 export const Big = (number) => new BigNumber(number)
 
 export const urls = {
-  showTransaction: (tx) => `https://etherscan.io/tx/${tx}/`,
+  showTransaction: (tx) => `https://tronscan.io/#/transaction/${(tx).substring(2)}/`,                 
+
   showAddress: (address) => `https://www.etherscan.io/address/${address}/`,
   showToken: (address) => `https://www.etherscan.io/token/${address}/`,
   showBlock: (block) => `https://etherscan.io/block/${block}/`,
