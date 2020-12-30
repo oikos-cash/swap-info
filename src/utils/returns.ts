@@ -4,8 +4,8 @@ import dayjs from 'dayjs'
 import { getShareValueOverTime } from '.'
 
 export const priceOverrides = [
-  '0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48', // USDC
-  '0x6b175474e89094c44da98b954eedeac495271d0f', // DAI
+  '0xa614f803B6FD780986A42c78Ec9c7f77e6DeD13C', // USDT
+  '0x834295921A488D9d42b4b3021ED1a3C39fB0f03e', // USDJ
 ]
 
 interface ReturnMetrics {
@@ -39,11 +39,11 @@ function formatPricesForEarlyTimestamps(position): Position {
       position.token1PriceUSD = 1
     }
     // WETH price
-    if (position.pair?.token0.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-      position.token0PriceUSD = 203
+    if (position.pair?.token0.id === '0x891cdb91d149f23b1a45d9c5ca78a88d0cb44c18') {
+      position.token0PriceUSD = 0.015
     }
-    if (position.pair?.token1.id === '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2') {
-      position.token1PriceUSD = 203
+    if (position.pair?.token1.id === '0x891cdb91d149f23b1a45d9c5ca78a88d0cb44c18') {
+      position.token1PriceUSD = 0.015
     }
   }
   return position
@@ -188,9 +188,9 @@ export async function getHistoricalPairReturns(startDateTimestamp, currentPairDa
 
   const shareValues = await getShareValueOverTime(currentPairData.id, dayTimestamps)
   const shareValuesFormatted = {}
-  shareValues?.map((share) => {
-    shareValuesFormatted[share.timestamp] = share
-  })
+  //shareValues?.map((share) => {
+  //  shareValuesFormatted[share.timestamp] = share
+  //})
 
   // set the default position and data
   let positionT0 = pairSnapshots[0]

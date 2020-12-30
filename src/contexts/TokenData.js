@@ -197,7 +197,7 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
   console.log({ethPrice, ethPriceOld})
 
   let utcCurrentTime = dayjs()
-  utcCurrentTime = utcCurrentTime.subtract('2', 'month')
+  //utcCurrentTime = utcCurrentTime.subtract('4', 'month')
   const utcOneDayBack = utcCurrentTime.subtract(1, 'day').unix()
   const utcTwoDaysBack = utcCurrentTime.subtract(2, 'day').unix()
 

@@ -16,6 +16,7 @@ import DropdownSelect from '../DropdownSelect'
 import FormattedName from '../FormattedName'
 import { TYPE } from '../../Theme'
 import { updateNameData } from '../../utils/data'
+import { isTypeNode } from 'graphql'
 
 dayjs.extend(utc)
 
@@ -174,14 +175,27 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
   const [txFilter, setTxFilter] = useState(TXN_TYPE.ALL)
 
   const [currency] = useCurrentCurrency()
+  const [tronWeb, setTronweb] = useState()
+
+
 
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
     setPage(1)
   }, [transactions])
 
+
+
+
   // parse the txns and format for UI
   useEffect(() => {
+
+    if (window.tronWeb) {
+      setTronweb(window.tronWeb)
+    }  else {
+      setTronweb(false)
+    }
+
     if (transactions && transactions.mints && transactions.burns && transactions.swaps) {
       let newTxns = []
       if (transactions.mints.length > 0) {
@@ -279,7 +293,10 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
   const below1080 = useMedia('(max-width: 1080px)')
   const below780 = useMedia('(max-width: 780px)')
 
-  const ListItem = ({ item }) => {
+  const ListItem = ({ item }) => {  
+    if (!!tronWeb) {
+      item.account = tronWeb.address.fromHex(  item.account )
+    }  
     return (
       <DashGrid style={{ height: '48px' }}>
         <DataText area="txn" fontWeight="500">
@@ -304,8 +321,8 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
         )}
         {!below1080 && (
           <DataText area="account">
-            <Link color={color} external href={'https://etherscan.io/address/' + item.account}>
-              {item.account && item.account.slice(0, 6) + '...' + item.account.slice(38, 42)}
+            <Link color={color} external href={'https://tronscan.io/#/address/' + item.account}>
+              {item.account && item.account.slice(0, 6) + '...' + item.account.slice(-3)}
             </Link>
           </DataText>
         )}

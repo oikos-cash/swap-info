@@ -144,6 +144,7 @@ function TopTokenList({ tokens, itemMax = 10 }) {
       tokens &&
       Object.keys(tokens)
         .filter((key) => {
+          console.log(`checking for key ${key}`)
           return !OVERVIEW_TOKEN_BLACKLIST.includes(key)
         })
         .map((key) => tokens[key])
@@ -177,37 +178,43 @@ function TopTokenList({ tokens, itemMax = 10 }) {
   }, [formattedTokens, itemMax, page, sortDirection, sortedColumn])
 
   const ListItem = ({ item, index }) => {
-    return (
-      <DashGrid style={{ height: '48px' }} focus={true}>
-        <DataText area="name" fontWeight="500">
-          <Row>
-            {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
-            <TokenLogo address={item.id} />
-            <CustomLink style={{ marginLeft: '16px', whiteSpace: 'nowrap' }} to={'/token/' + item.id}>
-              <FormattedName
-                text={below680 ? item.symbol : item.name}
-                maxCharacters={below600 ? 8 : 16}
-                adjustSize={true}
-                link={true}
-              />
-            </CustomLink>
-          </Row>
-        </DataText>
-        {!below680 && (
-          <DataText area="symbol" color="text" fontWeight="500">
-            <FormattedName text={item.symbol} maxCharacters={5} />
+    if (item.totalLiquidityUSD > 0) {
+      return (
+        <DashGrid style={{ height: '48px' }} focus={true}>
+          <DataText area="name" fontWeight="500">
+            <Row>
+              {!below680 && <div style={{ marginRight: '1rem', width: '10px' }}>{index}</div>}
+              <TokenLogo address={item.id} />
+              <CustomLink style={{ marginLeft: '16px', whiteSpace: 'nowrap' }} to={'/token/' + item.id}>
+                <FormattedName
+                  text={below680 ? item.symbol : item.name}
+                  maxCharacters={below600 ? 8 : 16}
+                  adjustSize={true}
+                  link={true}
+                />
+              </CustomLink>
+            </Row>
           </DataText>
-        )}
-        <DataText area="liq">{formattedNum(item.totalLiquidityUSD, true)}</DataText>
-        <DataText area="vol">{formattedNum(item.oneDayVolumeUSD, true)}</DataText>
-        {!below1080 && (
-          <DataText area="price" color="text" fontWeight="500">
-            {formattedNum(item.priceUSD, true)}
-          </DataText>
-        )}
-        {!below1080 && <DataText area="change">{formattedPercent(item.priceChangeUSD)}</DataText>}
-      </DashGrid>
-    )
+          {!below680 && (
+            <DataText area="symbol" color="text" fontWeight="500">
+              <FormattedName text={item.symbol} maxCharacters={5} />
+            </DataText>
+          )}
+          <DataText area="liq">{formattedNum(item.totalLiquidityUSD, true)}</DataText>
+          <DataText area="vol">{formattedNum(item.oneDayVolumeUSD, true)}</DataText>
+          {!below1080 && (
+            <DataText area="price" color="text" fontWeight="500">
+              {formattedNum(item.priceUSD, true)}
+            </DataText>
+          )}
+          {!below1080 && <DataText area="change">{formattedPercent(item.priceChangeUSD)}</DataText>}
+        </DashGrid>
+      )
+    } else {
+      return (<DashGrid style={{ height: '48px' }} focus={true}>
+              </DashGrid>)
+    }
+    
   }
 
   return (

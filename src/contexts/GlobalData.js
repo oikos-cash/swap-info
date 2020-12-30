@@ -218,7 +218,8 @@ async function getGlobalData(ethPrice, oldEthPrice) {
 
   try {
     // get timestamps for the days
-    const utcCurrentTime = dayjs()
+    let utcCurrentTime = dayjs()
+   //utcCurrentTime = utcCurrentTime.subtract('2', 'month')
     const utcOneDayBack = utcCurrentTime.subtract(1, 'day').unix()
     const utcTwoDaysBack = utcCurrentTime.subtract(2, 'day').unix()
     const utcOneWeekBack = utcCurrentTime.subtract(1, 'week').unix()
@@ -614,10 +615,10 @@ export function useGlobalTransactions() {
 }
 
 export function useEthPrice() {
- // const [state, { updateEthPrice }] = useGlobalDataContext()
-  const ethPrice = 0.026 //state?.[ETH_PRICE_KEY]
-  const ethPriceOld = 0.026 //state?.['oneDayPrice']
-  /*useEffect(() => {
+  const [state, { updateEthPrice }] = useGlobalDataContext()
+  const ethPrice = state?.[ETH_PRICE_KEY]
+  const ethPriceOld =state?.['oneDayPrice']
+  useEffect(() => {
     async function checkForEthPrice() {
       if (!ethPrice) {
         let [newPrice, oneDayPrice, priceChange] = await getEthPrice()
@@ -625,7 +626,7 @@ export function useEthPrice() {
       }
     }
     checkForEthPrice()
-  }, [ethPrice, updateEthPrice])*/
+  }, [ethPrice, updateEthPrice])
 
   return [ethPrice, ethPriceOld]
 }

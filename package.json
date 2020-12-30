@@ -14,7 +14,7 @@
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "@uniswap/token-lists": "^1.0.0-beta.15",
-    "ajv": "^6.12.4",
+    "ajv": "^6.12.6",
     "animated-number-react": "^0.1.1",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
@@ -88,5 +88,8 @@
       "last 1 safari version"
     ]
   },
-  "license": "GPL-3.0-or-later"
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "tronweb": "^3.2.1"
+  }
 }

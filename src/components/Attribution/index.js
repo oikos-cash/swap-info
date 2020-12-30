@@ -6,13 +6,11 @@ const Attribution = () => (
       Github
     </a>{' '}
     |{' '}
-    <a href="https://uniswap.io" rel="noopener noreferrer" target="_blank">
-      Uniswap
+    <a href="https://swap.oikos.cash" rel="noopener noreferrer" target="_blank">
+      Oikos swap
     </a>{' '}
     |{' '}
-    <a href="https://gifer.com/en/1Atv" rel="noopener noreferrer" target="_blank">
-      GIF
-    </a>
+ 
   </p>
 )
 

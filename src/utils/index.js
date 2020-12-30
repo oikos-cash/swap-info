@@ -98,7 +98,8 @@ export const toWeeklyDate = (date) => {
 }
 
 export function getTimestampsForChanges() {
-  const utcCurrentTime = dayjs()
+  let utcCurrentTime = dayjs()
+  //utcCurrentTime = utcCurrentTime.subtract('1.5', 'month')
   console.log(utcCurrentTime)
   const t1 = utcCurrentTime.subtract(1, 'day').startOf('minute').unix()
   const t2 = utcCurrentTime.subtract(2, 'day').startOf('minute').unix()
@@ -141,7 +142,7 @@ export async function splitQuery(query, localClient, vars, list, skipCount = 100
  * @param {Int} timestamp in seconds
  */
 export async function getBlockFromTimestamp(timestamp) {
-
+ console.log(`Got timestamp ${timestamp}`)
  // timestamp = timestamp - 8278133
   let result = await blockClient.query({
     query: GET_BLOCK,

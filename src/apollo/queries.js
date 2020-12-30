@@ -49,7 +49,7 @@ export const V1_DATA_QUERY = gql`
 export const GET_BLOCK = gql`
   query blocks($timestampFrom: Int!, $timestampTo: Int!) {
     blocks(
-      first: 100
+      first: 1
       orderBy: timestamp
       orderDirection: asc
       where: { timestamp_gt: $timestampFrom, timestamp_lt: $timestampTo }
