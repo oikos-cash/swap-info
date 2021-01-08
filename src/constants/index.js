@@ -36,7 +36,17 @@ export const OVERVIEW_TOKEN_BLACKLIST = [
 // pair blacklist
 export const PAIR_BLACKLIST = ['0xb6a741f37d6e455ebcc9f17e2c16d0586c3f57a5', 
                                '0xa9545CFe49F917EA73aFB1396Bb2d813979679BD',
-                              '0x61C9b7B424D7bDC181D5A6b2237b618c806d3a4E']
+                               '0x61C9b7B424D7bDC181D5A6b2237b618c806d3a4E',
+                               '0x81c05c9067064a32a32fa270562a21cbea58d638',
+                               '0x9d0e43bb37d013fac1fd37d6a293406955ebecf9',
+                               '0x8a87e092b8ab7ba82250db8cb742cb2aef2f8218',
+                               '0x804fc207b5cfdff2cba0293e88ffb5d428d08df0',
+                               '0x8acbf441a1735f894e23c3dd14da1299db0728ab',
+                               '0x43965424c16ff65c2d85ffe6514c1585890b99aa',
+                               '0xa9545cfe49f917ea73afb1396bb2d813979679bd',
+                               '0xf196517a21085ca1847e66666829f69fc2bea383',
+                               '0x61c9b7b424d7bdc181d5a6b2237b618c806d3a4e',
+                               '0xd5ad3e87478ff81569fab51fcab663d224e00a89'] 
 
 /**
  * For tokens that cause erros on fee calculations
