@@ -185,10 +185,17 @@ function PairPage({ pairAddress, history }) {
   const below1080 = useMedia('(max-width: 1080px)')
   const below900 = useMedia('(max-width: 900px)')
   const below600 = useMedia('(max-width: 600px)')
+  const [tronWeb, setTronweb] = useState()
 
   const [dismissed, markAsDismissed] = usePathDismissed(history.location.pathname)
 
   useEffect(() => {
+    if (window.tronWeb) {
+      setTronweb(window.tronWeb)
+    } else {
+      setTronweb(false)
+    }
+
     window.scrollTo({
       behavior: 'smooth',
       top: 0,
@@ -196,6 +203,18 @@ function PairPage({ pairAddress, history }) {
   }, [])
 
   const [savedPairs, addPair] = useSavedPairs()
+
+  let b58_pairAddress = pairAddress
+
+  let b58_token0 = token0?.id
+  let b58_token1 = token1?.id
+
+  if (!!tronWeb) {
+    b58_pairAddress = tronWeb.address.fromHex(  b58_pairAddress )
+    b58_token0 = tronWeb.address.fromHex(  b58_token0 )
+    b58_token1 = tronWeb.address.fromHex(  b58_token1 )
+  } 
+
 
   const listedTokens = useListedTokens()
 
@@ -444,9 +463,9 @@ function PairPage({ pairAddress, history }) {
                     <TYPE.main>Pair Address</TYPE.main>
                     <AutoRow align="flex-end">
                       <TYPE.main style={{ marginTop: '.5rem' }}>
-                        {pairAddress.slice(0, 6) + '...' + pairAddress.slice(38, 42)}
+                        {b58_pairAddress.slice(0, 6) + '...' + b58_pairAddress.slice(38, 42)}
                       </TYPE.main>
-                      <CopyHelper toCopy={pairAddress} />
+                      <CopyHelper toCopy={b58_pairAddress} />
                     </AutoRow>
                   </Column>
                   <Column>
@@ -458,9 +477,9 @@ function PairPage({ pairAddress, history }) {
                     </TYPE.main>
                     <AutoRow align="flex-end">
                       <TYPE.main style={{ marginTop: '.5rem' }}>
-                        {token0 && token0.id.slice(0, 6) + '...' + token0.id.slice(38, 42)}
+                        {token0 && b58_token0.slice(0, 6) + '...' + b58_token0.slice(38, 42)}
                       </TYPE.main>
-                      <CopyHelper toCopy={token0?.id} />
+                      <CopyHelper toCopy={b58_token0} />
                     </AutoRow>
                   </Column>
                   <Column>
@@ -472,14 +491,14 @@ function PairPage({ pairAddress, history }) {
                     </TYPE.main>
                     <AutoRow align="flex-end">
                       <TYPE.main style={{ marginTop: '.5rem' }} fontSize={16}>
-                        {token1 && token1.id.slice(0, 6) + '...' + token1.id.slice(38, 42)}
+                        {token1 && b58_token1.slice(0, 6) + '...' + b58_token1.slice(38, 42)}
                       </TYPE.main>
-                      <CopyHelper toCopy={token1?.id} />
+                      <CopyHelper toCopy={b58_token1} />
                     </AutoRow>
                   </Column>
                   <ButtonLight color={backgroundColor}>
-                    <Link color={backgroundColor} external href={'https://etherscan.io/address/' + pairAddress}>
-                      View on Etherscan ↗
+                    <Link color={backgroundColor} external href={'https://tronscan.io/#/address/' + b58_pairAddress}>
+                      View on Tronscan ↗
                     </Link>
                   </ButtonLight>
                 </TokenDetailsLayout>

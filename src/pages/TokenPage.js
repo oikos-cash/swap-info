@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import 'feather-icons'
 import { withRouter } from 'react-router-dom'
 import { Text } from 'rebass'
@@ -23,7 +23,6 @@ import { useColor } from '../hooks'
 import CopyHelper from '../components/Copy'
 import { useMedia } from 'react-use'
 import { useDataForList } from '../contexts/PairData'
-import { useEffect } from 'react'
 import Warning from '../components/Warning'
 import { usePathDismissed, useSavedTokens } from '../contexts/LocalStorage'
 import { Hover, PageWrapper, ContentWrapper, StyledIcon } from '../components'
@@ -151,7 +150,7 @@ function TokenPage({ address, history }) {
   const below800 = useMedia('(max-width: 800px)')
   const below600 = useMedia('(max-width: 600px)')
   const below500 = useMedia('(max-width: 500px)')
-
+  const [tronWeb, setTronweb] = useState()
   // format for long symbol
   const LENGTH = below1080 ? 10 : 16
   const formattedSymbol = symbol?.length > LENGTH ? symbol.slice(0, LENGTH) + '...' : symbol
@@ -161,11 +160,22 @@ function TokenPage({ address, history }) {
   const listedTokens = useListedTokens()
 
   useEffect(() => {
+    if (window.tronWeb) {
+      setTronweb(window.tronWeb)
+    } else {
+      setTronweb(false)
+    }
+
     window.scrollTo({
       behavior: 'smooth',
       top: 0,
     })
   }, [])
+
+  let b58_address = address
+  if (!!tronWeb) {
+    b58_address = tronWeb.address.fromHex(  b58_address )
+  } 
 
   return (
     <PageWrapper>
@@ -188,10 +198,10 @@ function TokenPage({ address, history }) {
               style={{ width: 'fit-content' }}
               color={backgroundColor}
               external
-              href={'https://tronscan.io/#/transaction/' + address.substring(2)}
+              href={'https://tronscan.io/#/address/' + b58_address}
               >
               <Text style={{ marginLeft: '.15rem' }} fontSize={'14px'} fontWeight={400}>
-                ({address.slice(0, 8) + '...' + address.slice(36, 42)})
+                ({b58_address.slice(0, 8) + '...' + b58_address.slice(36, 42)})
               </Text>
             </Link>
           </AutoRow>
