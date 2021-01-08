@@ -182,7 +182,6 @@ export const SHARE_VALUE = (pairAddress, blocks) => {
       }
     `
   )
-
   queryString += '}'
   return gql(queryString)
 }
@@ -747,17 +746,7 @@ export const TOKEN_CHART = gql`
       dailyVolumeETH
       dailyVolumeToken
       dailyVolumeUSD
-      mostLiquidPairs {
-        id
-        token0 {
-          id
-          derivedETH
-        }
-        token1 {
-          id
-          derivedETH
-        }
-      }
+      
     }
   }
 `
