@@ -388,14 +388,14 @@ function TokenPage({ address, history }) {
                     <TYPE.main>Address</TYPE.main>
                     <AutoRow align="flex-end">
                       <TYPE.main style={{ marginTop: '.5rem' }} fontSize={24} fontWeight="500">
-                        {address.slice(0, 8) + '...' + address.slice(36, 42)}
+                        {b58_address.slice(0, 8) + '...' + b58_address.slice(36, 42)}
                       </TYPE.main>
-                      <CopyHelper toCopy={address} />
+                      <CopyHelper toCopy={b58_address} />
                     </AutoRow>
                   </Column>
                   <ButtonLight color={backgroundColor}>
-                    <Link color={backgroundColor} external href={'https://etherscan.io/address/' + address}>
-                      View on Etherscan ↗
+                    <Link color={backgroundColor} external href={'https://tronscan.io/#/address/' + b58_address}>
+                      View on Tronscan ↗
                     </Link>
                   </ButtonLight>
                 </TokenDetailsLayout>
