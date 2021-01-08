@@ -14,7 +14,7 @@ import DoubleTokenLogo from '../DoubleLogo'
 import FormattedName from '../FormattedName'
 import QuestionHelper from '../QuestionHelper'
 import { TYPE } from '../../Theme'
-
+import {  PAIR_BLACKLIST } from '../../constants'
 dayjs.extend(utc)
 
 const PageButtons = styled.div`
@@ -147,7 +147,7 @@ function PairList({ pairs, color, disbaleLinks, maxItems = 10 }) {
   const ListItem = ({ pairAddress, index }) => {
     const pairData = pairs[pairAddress]
 
-    if (pairData && pairData.token0 && pairData.token1) {
+    if (pairData && pairData.token0 && pairData.token1 && pairData.token1 && !PAIR_BLACKLIST.includes(pairAddress.toLowerCase())) {
       const liquidity = formattedNum(pairData.reserveUSD, true)
       const volume = formattedNum(pairData.oneDayVolumeUSD, true)
       const apy = formattedPercent((pairData.oneDayVolumeUSD * 0.003 * 365 * 100) / pairData.reserveUSD)
