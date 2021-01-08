@@ -73,6 +73,8 @@ const DashGrid = styled.div`
   }
 `
 
+
+
 function AccountSearch({ history, small }) {
   const [accountValue, setAccountValue] = useState()
   const [savedAccounts, addAccount, removeAccount] = useSavedAccounts()
@@ -86,6 +88,14 @@ function AccountSearch({ history, small }) {
     }
   }
 
+  function _setAccountValue(account) {
+    if (window.tronWeb.isAddress(account.replace(/^.{2}/g, '0x')) || window.tronWeb.isAddress(account) ) {
+      setAccountValue(window.tronWeb.address.toHex(account).replace(/^.{2}/g, '0x'))
+    } else {
+      alert('Invalid address provided')
+    }
+  }
+
   return (
     <AutoColumn gap={'1rem'}>
       {!small && (
@@ -95,7 +105,7 @@ function AccountSearch({ history, small }) {
               <Input
                 placeholder="0x..."
                 onChange={(e) => {
-                  setAccountValue(e.target.value)
+                  _setAccountValue(e.target.value)
                 }}
               />
             </Wrapper>
@@ -113,6 +123,7 @@ function AccountSearch({ history, small }) {
             <Divider />
             {savedAccounts?.length > 0 ? (
               savedAccounts.map((account) => {
+                let base58Account = window.tronWeb.address.fromHex(account)
                 return (
                   <DashGrid key={account} center={true} style={{ height: 'fit-content', padding: '1rem 0 0 0' }}>
                     <Flex
@@ -120,7 +131,7 @@ function AccountSearch({ history, small }) {
                       justifyContent="space-between"
                       onClick={() => history.push('/account/' + account)}
                     >
-                      <AccountLink>{account?.slice(0, 42)}</AccountLink>
+                      <AccountLink>{base58Account?.slice(0, 42)}</AccountLink>
                       <Hover
                         onClick={(e) => {
                           e.stopPropagation()
@@ -146,13 +157,15 @@ function AccountSearch({ history, small }) {
             <TYPE.main>{'Accounts'}</TYPE.main>
             {savedAccounts?.length > 0 ? (
               savedAccounts.map((account) => {
+                let base58Account = window.tronWeb.address.fromHex(account)
+
                 return (
                   <RowBetween key={account}>
                     <ButtonFaded onClick={() => history.push('/account/' + account)}>
                       {small ? (
-                        <TYPE.header>{account?.slice(0, 6) + '...' + account?.slice(38, 42)}</TYPE.header>
+                        <TYPE.header>{base58Account?.slice(0, 6) + '...' + base58Account?.slice(38, 42)}</TYPE.header>
                       ) : (
-                        <AccountLink>{account?.slice(0, 42)}</AccountLink>
+                        <AccountLink>{base58Account?.slice(0, 42)}</AccountLink>
                       )}
                     </ButtonFaded>
                     <Hover onClick={() => removeAccount(account)}>

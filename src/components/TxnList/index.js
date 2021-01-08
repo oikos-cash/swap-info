@@ -178,7 +178,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
   const [tronWeb, setTronweb] = useState()
 
 
-
+ 
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
     setPage(1)
@@ -305,7 +305,7 @@ function TxnList({ transactions, symbol0Override, symbol1Override, color }) {
           </Link>
         </DataText>
         <DataText area="value">
-          {currency === 'ETH' ? 'Ξ ' + formattedNum(item.valueETH) : formattedNum(item.amountUSD, true)}
+          {currency === 'ETH' || currency === "WTRX" ? formattedNum(item.valueETH) : formattedNum(item.amountUSD, true)}
         </DataText>
         {!below780 && (
           <>
