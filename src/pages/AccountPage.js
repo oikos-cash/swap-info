@@ -93,6 +93,7 @@ function AccountPage({ account }) {
   const transactions = useUserTransactions(account)
   const positions = useUserPositions(account)
   const miningPositions = useMiningPositions(account)
+  const [tronWeb, setTronweb] = useState()
 
   // get data for user stats
   const transactionCount = transactions?.swaps?.length + transactions?.burns?.length + transactions?.mints?.length
@@ -109,6 +110,12 @@ function AccountPage({ account }) {
   // if any position has token from fee warning list, show warning
   const [showWarning, setShowWarning] = useState(false)
   useEffect(() => {
+    if (window.tronWeb) {
+      setTronweb(window.tronWeb)
+    }  else {
+      setTronweb(false)
+    }
+
     if (positions) {
       for (let i = 0; i < positions.length; i++) {
         if (
@@ -160,15 +167,20 @@ function AccountPage({ account }) {
     ;(isBookmarked ? removeAccount : addAccount)(account)
   }, [account, isBookmarked, addAccount, removeAccount])
 
+  let b58_account = account
+  if (!!tronWeb) {
+    b58_account = tronWeb.address.fromHex(  b58_account )
+  } 
+
   return (
     <PageWrapper>
       <ContentWrapper>
         <RowBetween>
           <TYPE.body>
             <BasicLink to="/accounts">{'Accounts '}</BasicLink>→{' '}
-            <Link lineHeight={'145.23%'} href={'https://etherscan.io/address/' + account} target="_blank">
+            <Link lineHeight={'145.23%'} href={'https://tronscan.io/#/address/' + b58_account} target="_blank">
               {' '}
-              {account?.slice(0, 42)}{' '}
+              {b58_account?.slice(0, 42)}{' '}
             </Link>
           </TYPE.body>
           {!below600 && <Search small={true} />}
@@ -176,9 +188,9 @@ function AccountPage({ account }) {
         <Header>
           <RowBetween>
             <span>
-              <TYPE.header fontSize={24}>{account?.slice(0, 6) + '...' + account?.slice(38, 42)}</TYPE.header>
-              <Link lineHeight={'145.23%'} href={'https://etherscan.io/address/' + account} target="_blank">
-                <TYPE.main fontSize={14}>View on Etherscan</TYPE.main>
+              <TYPE.header fontSize={24}>{b58_account?.slice(0, 6) + '...' + b58_account?.slice(38, 42)}</TYPE.header>
+              <Link lineHeight={'145.23%'} href={'https://tronscan.io/#address/' + b58_account} target="_blank">
+                <TYPE.main fontSize={14}>View on Tronscan</TYPE.main>
               </Link>
             </span>
             <AccountWrapper>

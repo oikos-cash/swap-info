@@ -83,6 +83,7 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
   const [page, setPage] = useState(1)
   const [maxPage, setMaxPage] = useState(1)
   const ITEMS_PER_PAGE = maxItems
+  const [tronWeb, setTronweb] = useState()
 
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
@@ -90,6 +91,12 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
   }, [lps])
 
   useEffect(() => {
+    if (window.tronWeb) {
+      setTronweb(window.tronWeb)
+    }  else {
+      setTronweb(false)
+    }
+
     if (lps) {
       let extraPages = 1
       if (Object.keys(lps).length % ITEMS_PER_PAGE === 0) {
@@ -100,6 +107,11 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
   }, [ITEMS_PER_PAGE, lps])
 
   const ListItem = ({ lp, index }) => {
+    let b58_userId = lp.user.id
+    if (!!tronWeb) {
+      b58_userId = tronWeb.address.fromHex(  b58_userId )
+    } 
+        
     return (
       <DashGrid style={{ height: '48px' }} disbaleLinks={disbaleLinks} focus={true}>
         {!below600 && (
@@ -109,7 +121,7 @@ function LPList({ lps, disbaleLinks, maxItems = 10 }) {
         )}
         <DataText area="name" fontWeight="500" justifyContent="flex-start">
           <CustomLink style={{ marginLeft: below600 ? 0 : '1rem', whiteSpace: 'nowrap' }} to={'/account/' + lp.user.id}>
-            {below800 ? lp.user.id.slice(0, 4) + '...' + lp.user.id.slice(38, 42) : lp.user.id}
+            {below800 ? b58_userId.slice(0, 4) + '...' + b58_userId.slice(38, 42) : b58_userId}
           </CustomLink>
         </DataText>
 
