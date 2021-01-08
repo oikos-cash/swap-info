@@ -184,8 +184,7 @@ export default function Provider({ children }) {
 
 async function getBulkPairData(pairList, ethPrice) {
   const [t1, t2, tWeek] = getTimestampsForChanges()
-  //.log(await getBlocksFromTimestamps([t1, t2, tWeek]))
-  return
+
   let [{ number: b1 }, { number: b2 }, { number: bWeek }] = await getBlocksFromTimestamps([t1, t2, tWeek])
 
   try {
@@ -420,7 +419,7 @@ const getHourlyRateData = async (pairAddress, startTime, latestBlock) => {
       })
     }
 
-    const result = await splitQuery(HOURLY_PAIR_RATES, client, [pairAddress], blocks, 100)
+    const result = await splitQuery(HOURLY_PAIR_RATES, client, [pairAddress, latestBlock, utcEndTime], blocks, 100)
 
     // format token ETH price results
     let values = []
@@ -573,6 +572,7 @@ export function usePairData(pairAddress) {
   const [ethPrice] = useEthPrice()
   const pairData = state?.[pairAddress]
 
+  console.dir(pairData, {depth:null})
   useEffect(() => {
     async function fetchData() {
       if (!pairData && pairAddress) {

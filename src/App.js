@@ -105,8 +105,6 @@ function App() {
   // show warning
   const showWarning = headBlock && latestBlock ? headBlock - latestBlock > BLOCK_DIFFERENCE_THRESHOLD : false
   const [ethPrice] = useEthPrice()
-  console.log(ethPrice)
-  console.log(globalChartData)
   return (
     <ApolloProvider client={client}>
       <AppWrapper>

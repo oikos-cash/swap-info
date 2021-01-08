@@ -194,7 +194,7 @@ export default function Provider({ children }) {
 
 const getTopTokens = async (ethPrice, ethPriceOld) => {
 
-  console.log({ethPrice, ethPriceOld})
+  //console.log({ethPrice, ethPriceOld})
 
   let utcCurrentTime = dayjs()
   //utcCurrentTime = utcCurrentTime.subtract('4', 'month')
@@ -204,7 +204,7 @@ const getTopTokens = async (ethPrice, ethPriceOld) => {
   let oneDayBlock = await getBlockFromTimestamp(utcOneDayBack)
   let twoDayBlock = await getBlockFromTimestamp(utcTwoDaysBack)
 
-  console.log({oneDayBlock, twoDayBlock})
+  //console.log({oneDayBlock, twoDayBlock})
   try {
     let current = await client.query({
       query: TOKENS_CURRENT,

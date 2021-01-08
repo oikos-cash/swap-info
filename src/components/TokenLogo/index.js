@@ -70,9 +70,21 @@ export default function TokenLogo({ address, header = false, size = '24px', ...r
     )
   }
 
-  const path = `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
-    address
-  )}/logo.png`
+  const mappings = {
+      '0xa099cc498284ed6e25f3c99e6d55074e6ba42911': 'https://oikos.exchange/images/synths/sTRX-icon.svg',
+      '0xda2853b2bede0e3018f56d47624a413b2abe0831': 'https://oikos.exchange/images/synths/sUSD-icon.svg',
+      '0xa614f803b6fd780986a42c78ec9c7f77e6ded13c': 'https://coin.top/production/logo/usdtlogo.png',
+      '0x891cdb91d149f23b1a45d9c5ca78a88d0cb44c18': 'https://coin.top/production/upload/logo/TNUC9Qb1rRpS5CbWLmNMxXBjyFoydXjWFR.png',
+      '0xe11cdc164a9d8c1ae19d95b0165278690d39d84b': 'https://oikos.exchange/images/synths/OKS-icon.svg',
+      '0xa1402557c4c7a50f958e15c0527a60bf6666c77e': 'https://oikos.exchange/images/synths/sETH-icon.svg',
+      '0xE5CB7A7E08Da38E5bC76fd5D97B3aa47AD8f7b99': 'https://oikos.exchange/images/synths/OKS-icon.svg'
+  }
+
+ 
+ //console.log(`mapping for address ${address} is ${mappings[address]}`)
+ const path = mappings[address] != '' ? mappings[address] : `https://raw.githubusercontent.com/trustwallet/assets/master/blockchains/ethereum/assets/${isAddress(
+     address
+ )}/logo.png`
 
   return (
     <Inline>

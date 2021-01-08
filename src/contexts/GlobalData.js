@@ -240,7 +240,7 @@ async function getGlobalData(ethPrice, oldEthPrice) {
     })
     data = result.data.uniswapFactories[0]
 
-    console.log("uniswap factory: ", data)
+    console.log("Factory data: ", data)
     // fetch the historical data
     let oneDayResult = await client.query({
       query: GLOBAL_DATA(oneDayBlock?.number),
@@ -556,7 +556,7 @@ export function useGlobalData() {
     }
   }, [ethPrice, oldEthPrice, update, data, updateAllPairsInUniswap, updateAllTokensInUniswap])
 
-  console.log(data)
+  //console.log(data)
   return data || {}
 }
 
@@ -634,7 +634,7 @@ export function useEthPrice() {
 export function useAllPairsInUniswap() {
   const [state] = useGlobalDataContext()
   let allPairs = state?.allPairs
-  console.log("allPairs", allPairs)
+  //console.log("allPairs", allPairs)
   return allPairs || []
 }
 

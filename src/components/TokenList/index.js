@@ -144,7 +144,7 @@ function TopTokenList({ tokens, itemMax = 10 }) {
       tokens &&
       Object.keys(tokens)
         .filter((key) => {
-          console.log(`checking for key ${key}`)
+          //console.log(`checking for key ${key}`)
           return !OVERVIEW_TOKEN_BLACKLIST.includes(key)
         })
         .map((key) => tokens[key])

@@ -63,13 +63,18 @@ export const GET_BLOCK = gql`
 
 export const GET_BLOCKS = (timestamps) => {
   let queryString = 'query blocks {'
-  queryString += timestamps.map((timestamp) => {
-    return `t${timestamp}:blocks(first: 1, orderBy: timestamp, orderDirection: desc, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${
-      timestamp + 600
-    } }) {
-      number
-    }`
-  })
+  if (timestamps.length > 0) {
+    queryString += timestamps.map((timestamp) => {
+      return `t${timestamp}:blocks(first: 10, orderBy: timestamp, orderDirection: desc, where: { timestamp_gt: ${timestamp}, timestamp_lt: ${
+        timestamp + 600
+      } }) {
+        number
+      }`
+    })
+  } else {
+    queryString += 'blocks(first: 100, orderBy: timestamp, orderDirection: desc) { number }'
+  }
+
   queryString += '}'
   return gql(queryString)
 }
@@ -128,16 +133,24 @@ export const TOP_LPS_PER_PAIRS = gql`
   }
 `
 
-export const HOURLY_PAIR_RATES = (pairAddress, blocks) => {
+export const HOURLY_PAIR_RATES = (pairAddress, latestBlock, blocks) => {
   let queryString = 'query blocks {'
-  queryString += blocks.map(
-    (block) => `
-      t${block.timestamp}: pair(id:"${pairAddress}", block: { number: ${block.number} }) { 
-        token0Price
-        token1Price
-      }
-    `
-  )
+  if (blocks.length) {
+    queryString += blocks.map(
+      (block) => `
+        t${block.timestamp}: pair(id:"${pairAddress}", block: { number: ${block.number} }) { 
+          token0Price
+          token1Price
+        }
+      `
+    )
+  } else {
+    queryString +=`t${latestBlock}: pair(id:"${pairAddress}", block: { number: ${latestBlock} }) { 
+      token0Price
+      token1Price
+    }
+  `
+  }
 
   queryString += '}'
   return gql(queryString)
@@ -453,7 +466,7 @@ export const GLOBAL_DATA = (block) => {
 
 export const GLOBAL_TXNS = gql`
   query transactions {
-    transactions(first: 100, orderBy: timestamp, orderDirection: desc) {
+    transactions(first: 1000, orderBy: timestamp, orderDirection: desc) {
       mints(orderBy: timestamp, orderDirection: desc) {
         transaction {
           id
