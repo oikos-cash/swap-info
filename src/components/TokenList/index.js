@@ -15,7 +15,8 @@ import { withRouter } from 'react-router-dom'
 import { OVERVIEW_TOKEN_BLACKLIST } from '../../constants'
 import FormattedName from '../FormattedName'
 import { TYPE } from '../../Theme'
-
+import { usePairData } from '../../contexts/PairData'
+ 
 dayjs.extend(utc)
 
 const PageButtons = styled.div`
@@ -120,6 +121,11 @@ const SORT_FIELD = {
   CHANGE: 'priceChangeUSD',
 }
 
+function toReadable(price) {
+  return `$ ${Number(price).toFixed(2)}`
+}
+
+
 // @TODO rework into virtualized list
 function TopTokenList({ tokens, itemMax = 10 }) {
   // page state
@@ -133,6 +139,14 @@ function TopTokenList({ tokens, itemMax = 10 }) {
   const below1080 = useMedia('(max-width: 1080px)')
   const below680 = useMedia('(max-width: 680px)')
   const below600 = useMedia('(max-width: 600px)')
+
+
+  let {
+    token0,
+    token1,
+    token0Price,
+    token1Price,
+  } = usePairData("0x170ddac94981c839aa67eb019bda4ae63b450809")
 
   useEffect(() => {
     setMaxPage(1) // edit this to do modular
@@ -159,6 +173,7 @@ function TopTokenList({ tokens, itemMax = 10 }) {
       }
       setMaxPage(Math.floor(formattedTokens.length / itemMax) + extraPages)
     }
+
   }, [tokens, formattedTokens, itemMax])
 
   const filteredList = useMemo(() => {
@@ -204,7 +219,7 @@ function TopTokenList({ tokens, itemMax = 10 }) {
           <DataText area="vol">{formattedNum(item.oneDayVolumeUSD, true)}</DataText>
           {!below1080 && (
             <DataText area="price" color="text" fontWeight="500">
-              {formattedNum(item.priceUSD, true)}
+              { item.symbol === 'sUSD' ? toReadable(token0Price) : formattedNum(item.priceUSD, true)}
             </DataText>
           )}
           {!below1080 && <DataText area="change">{formattedPercent(item.priceChangeUSD)}</DataText>}

@@ -17,6 +17,7 @@ import { BasicLink } from '../components/Link'
 import Search from '../components/Search'
 import { formattedNum, formattedPercent, getPoolLink, getSwapLink, localNumber } from '../utils'
 import { useTokenData, useTokenTransactions, useTokenPairs } from '../contexts/TokenData'
+import { usePairData } from '../contexts/PairData'
 import { TYPE, ThemedBackground } from '../Theme'
 import { transparentize } from 'polished'
 import { useColor } from '../hooks'
@@ -86,6 +87,9 @@ const WarningGrouping = styled.div`
   opacity: ${({ disabled }) => disabled && '0.4'};
   pointer-events: ${({ disabled }) => disabled && 'none'};
 `
+function toReadable(price) {
+  return `$ ${Number(price).toFixed(2)}`
+}
 
 function TokenPage({ address, history }) {
   const {
@@ -104,12 +108,22 @@ function TokenPage({ address, history }) {
     txnChange,
   } = useTokenData(address)
 
+  let {
+    token0,
+    token1,
+    token0Price,
+    token1Price,
+  } = usePairData("0x170ddac94981c839aa67eb019bda4ae63b450809")
+
+
   useEffect(() => {
     document.querySelector('body').scrollTo(0, 0)
   }, [])
 
   // detect color from token
   const backgroundColor = useColor(id, symbol)
+
+  console.log(`token name ${name} symbol: ${symbol}`)
 
   const allPairs = useTokenPairs(address)
 
@@ -176,7 +190,6 @@ function TokenPage({ address, history }) {
   if (!!tronWeb) {
     b58_address = tronWeb.address.fromHex(  b58_address )
   } 
-
   return (
     <PageWrapper>
       <ThemedBackground backgroundColor={transparentize(0.6, backgroundColor)} />
@@ -229,7 +242,7 @@ function TokenPage({ address, history }) {
                   {!below1080 && (
                     <>
                       <TYPE.main fontSize={'1.5rem'} fontWeight={500} style={{ marginRight: '1rem' }}>
-                        {price}
+                        {symbol === 'sUSD' ? toReadable(token0Price) : price}
                       </TYPE.main>
                       {priceChange}
                     </>
@@ -262,10 +275,9 @@ function TokenPage({ address, history }) {
                 </RowFixed>
               </span>
             </RowBetween>
-
-            <>
+                <>
               <PanelWrapper style={{ marginTop: below1080 ? '0' : '1rem' }}>
-                {below1080 && price && (
+                {below1080 && price && token0Price (
                   <Panel>
                     <AutoColumn gap="20px">
                       <RowBetween>
@@ -275,7 +287,7 @@ function TokenPage({ address, history }) {
                       <RowBetween align="flex-end">
                         {' '}
                         <TYPE.main fontSize={'1.5rem'} lineHeight={1} fontWeight={500}>
-                          {price}
+                          {symbol === 'sUSD' ? toReadable(token0Price) : price}
                         </TYPE.main>
                         <TYPE.main>{priceChange}</TYPE.main>
                       </RowBetween>
