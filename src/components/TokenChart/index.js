@@ -44,7 +44,7 @@ const DATA_FREQUENCY = {
 
 const TokenChart = ({ address, color, base }) => {
   // settings for the window and candle width
-  const [chartFilter, setChartFilter] = useState(CHART_VIEW.PRICE)
+  const [chartFilter, setChartFilter] = useState(CHART_VIEW.LIQUIDITY)
   const [frequency, setFrequency] = useState(DATA_FREQUENCY.HOUR)
 
   const [darkMode] = useDarkModeManager()
@@ -161,14 +161,6 @@ const TokenChart = ({ address, color, base }) => {
                 style={{ marginRight: '6px' }}
               >
                 Volume
-              </OptionButton>
-              <OptionButton
-                active={chartFilter === CHART_VIEW.PRICE}
-                onClick={() => {
-                  setChartFilter(CHART_VIEW.PRICE)
-                }}
-              >
-                Price
               </OptionButton>
             </RowFixed>
             {chartFilter === CHART_VIEW.PRICE && (

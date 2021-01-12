@@ -141,24 +141,6 @@ const PairChart = ({ address, color, base0, base1 }) => {
             >
               Volume
             </OptionButton>
-            <OptionButton
-              active={chartFilter === CHART_VIEW.RATE0}
-              onClick={() => {
-                setTimeWindow(timeframeOptions.WEEK)
-                setChartFilter(CHART_VIEW.RATE0)
-              }}
-            >
-              {pairData.token0 ? formattedSymbol1 + '/' + formattedSymbol0 : '-'}
-            </OptionButton>
-            <OptionButton
-              active={chartFilter === CHART_VIEW.RATE1}
-              onClick={() => {
-                setTimeWindow(timeframeOptions.WEEK)
-                setChartFilter(CHART_VIEW.RATE1)
-              }}
-            >
-              {pairData.token0 ? formattedSymbol0 + '/' + formattedSymbol1 : '-'}
-            </OptionButton>
           </AutoRow>
           <AutoRow justify="flex-end" gap="6px">
             <OptionButton
